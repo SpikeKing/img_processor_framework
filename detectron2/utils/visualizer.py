@@ -2,6 +2,7 @@
 import colorsys
 import logging
 import math
+import copy
 import numpy as np
 from enum import Enum, unique
 import cv2
@@ -14,12 +15,11 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from detectron2.structures import BitMasks, Boxes, BoxMode, Keypoints, PolygonMasks, RotatedBoxes
 
-from .colormap import random_color
+from .colormap import random_color, fixed_color
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["ColorMode", "VisImage", "Visualizer"]
-
 
 _SMALL_OBJECT_AREA_THRESH = 1000
 _LARGE_MASK_AREA_THRESH = 120000
@@ -319,6 +319,44 @@ class Visualizer:
         )
         self._instance_mode = instance_mode
 
+    def filter_predictions(self, boxes, scores, classes, labels, masks):
+        """
+        过滤数据
+        """
+        boxes_np = boxes.tensor.numpy()
+        classes_list = classes.tolist()
+        scores_list = scores.tolist()
+
+        new_boxes, new_scores_list, new_class_list, new_labels, new_masks = [], [], [], [], []
+
+        person_class = 0  # 只过滤人
+        for i in range(len(classes_list)):
+            clazz = classes_list[i]
+
+            if clazz != person_class:  # 只过滤人
+                continue
+
+            box = boxes_np[i]
+            score = scores_list[i]
+            label = labels[i]
+            mask = masks[i]
+
+            new_boxes.append(box)
+            new_scores_list.append(score)
+            new_class_list.append(clazz)
+            new_labels.append(label)
+            new_masks.append(mask)
+
+        # 预测框
+        new_boxes = copy.deepcopy(boxes)
+        new_boxes_np = torch.Tensor(new_boxes)
+        new_boxes.tensor = new_boxes_np
+
+        new_classes = torch.Tensor(new_class_list)  # 新类别
+        new_scores = torch.Tensor(new_scores_list)  # 预测概率
+
+        return new_boxes, new_scores, new_classes, new_labels, new_masks
+
     def draw_instance_predictions(self, predictions):
         """
         Draw instance-level prediction results on an image.
@@ -342,6 +380,9 @@ class Visualizer:
             masks = [GenericMask(x, self.output.height, self.output.width) for x in masks]
         else:
             masks = None
+
+        # 过滤部分数据
+        boxes, scores, classes, labels, masks = self.filter_persons(boxes, scores, classes, labels, masks)
 
         if self._instance_mode == ColorMode.SEGMENTATION and self.metadata.get("thing_colors"):
             colors = [
@@ -562,7 +603,9 @@ class Visualizer:
         if labels is not None:
             assert len(labels) == num_instances
         if assigned_colors is None:
-            assigned_colors = [random_color(rgb=True, maximum=1) for _ in range(num_instances)]
+            # assigned_colors = [random_color(rgb=True, maximum=1) for _ in range(num_instances)]
+            # 使用特定颜色绘制
+            assigned_colors = [fixed_color(0, rgb=True, maximum=1) for _ in range(num_instances)]
         if num_instances == 0:
             return self.output
         if boxes is not None and boxes.shape[1] == 5:
