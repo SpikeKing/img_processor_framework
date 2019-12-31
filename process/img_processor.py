@@ -57,6 +57,7 @@ class VideoProcessor(object):
         """
         读取视频
         """
+        print('[Info] 输入视频路径: {}'.format(vid_path))
         cap, fps, n_frame, w, h = init_vid(vid_path)
         print('[Info] 输入视频 PFS: {}, 帧数: {}, 宽高: {} {}'.format(fps, n_frame, w, h))
 
