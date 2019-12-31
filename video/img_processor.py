@@ -53,18 +53,20 @@ class VideoProcessor(object):
         读取视频
         """
         cap, fps, n_frame, w, h = init_vid(vid_path)
+        print('[Info] 输入视频 PFS: {}, 帧数: {}, 宽高: {} {}'.format(fps, n_frame, w, h))
 
-        n_vid_frame = 10
         n_vid_fps = 5
+        n_vid_frame = 10
 
+        print('[Info] 输出帧数 PFS: {}, 帧数: {}'.format(n_vid_fps, n_vid_frame))
         fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
         vw = cv2.VideoWriter(filename=out_vid_path, fourcc=fourcc, fps=n_vid_fps, frameSize=(w, h), isColor=True)
 
         for i in range(0, n_frame):
-
-            if i == n_vid_frame:
+            if i == n_vid_frame:  # 特定帧数停止
                 break
-            print('[Info] frame processed: {}'.format(i))
+
+            print('[Info] frame processed: {} / {}'.format(i, n_vid_fps))
 
             cap.set(cv2.CAP_PROP_POS_FRAMES, i)
             ret, frame = cap.read()
@@ -80,13 +82,20 @@ class VideoProcessor(object):
 
 
 def img_processor_test():
+    vp = VideoProcessor()
+
+    # 处理视频
     vid_path = os.path.join(DATA_DIR, 'videos', 'test.mp4')
     out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.mp4')
+    vp.process_video(vid_path, out_vid_path)
+
+    # 处理图像
     # tmp_img = os.path.join(DATA_DIR, 'videos', 'test.jpg')
     # out_img = os.path.join(DATA_DIR, 'videos', 'test.out.jpg')
-
-    vp = VideoProcessor()
-    vp.process_video(vid_path, out_vid_path)
+    # img_opencv = cv2.imread(tmp_img)
+    # img_rgb = vp.process_img(img_opencv)
+    # img_opencv = img_rgb[:, :, ::-1]
+    # cv2.imwrite(out_img, img_opencv)
 
 
 def main():

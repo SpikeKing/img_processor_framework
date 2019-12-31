@@ -605,7 +605,7 @@ class Visualizer:
         if assigned_colors is None:
             # assigned_colors = [random_color(rgb=True, maximum=1) for _ in range(num_instances)]
             # 使用特定颜色绘制
-            assigned_colors = [fixed_color(0, rgb=True, maximum=1) for _ in range(num_instances)]
+            assigned_colors = [fixed_color(1, rgb=True, maximum=1) for _ in range(num_instances)]
         if num_instances == 0:
             return self.output
         if boxes is not None and boxes.shape[1] == 5:
