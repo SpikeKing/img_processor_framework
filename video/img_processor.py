@@ -55,8 +55,8 @@ class VideoProcessor(object):
         cap, fps, n_frame, w, h = init_vid(vid_path)
         print('[Info] 输入视频 PFS: {}, 帧数: {}, 宽高: {} {}'.format(fps, n_frame, w, h))
 
-        n_vid_fps = 5
-        n_vid_frame = 10
+        n_vid_fps = 25
+        n_vid_frame = 200
 
         print('[Info] 输出帧数 PFS: {}, 帧数: {}'.format(n_vid_fps, n_vid_frame))
         fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
