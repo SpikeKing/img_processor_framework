@@ -10,8 +10,8 @@ import os
 import cv2
 import numpy as np
 
-from demo.model import get_parser, setup_cfg
-from demo.predictor import VisualizationDemo
+from demo_dir.demo import get_parser, setup_cfg
+from demo_dir.predictor import VisualizationDemo
 from detectron2.data.detection_utils import read_image
 from root_dir import DATA_DIR, ROOT_DIR
 from utils.img_utils import init_vid

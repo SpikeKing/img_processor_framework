@@ -327,7 +327,7 @@ class Visualizer:
         classes_list = classes.tolist()
         scores_list = scores.tolist()
 
-        new_boxes, new_scores_list, new_class_list, new_labels, new_masks = [], [], [], [], []
+        new_boxes_list, new_scores_list, new_class_list, new_labels, new_masks = [], [], [], [], []
 
         person_class = 0  # 只过滤人
         for i in range(len(classes_list)):
@@ -341,7 +341,7 @@ class Visualizer:
             label = labels[i]
             mask = masks[i]
 
-            new_boxes.append(box)
+            new_boxes_list.append(box)
             new_scores_list.append(score)
             new_class_list.append(clazz)
             new_labels.append(label)
@@ -349,13 +349,13 @@ class Visualizer:
 
         # 预测框
         new_boxes = copy.deepcopy(boxes)
-        new_boxes_np = torch.Tensor(new_boxes)
+        new_boxes_np = torch.Tensor(new_boxes_list)
         new_boxes.tensor = new_boxes_np
 
         new_classes = torch.Tensor(new_class_list)  # 新类别
         new_scores = torch.Tensor(new_scores_list)  # 预测概率
 
-        return new_boxes, new_scores, new_classes, new_labels, new_masks
+        return new_boxes_list, new_scores, new_classes, new_labels, new_masks
 
     def draw_instance_predictions(self, predictions):
         """
@@ -382,7 +382,7 @@ class Visualizer:
             masks = None
 
         # 过滤部分数据
-        boxes, scores, classes, labels, masks = self.filter_persons(boxes, scores, classes, labels, masks)
+        boxes, scores, classes, labels, masks = self.filter_predictions(boxes, scores, classes, labels, masks)
 
         if self._instance_mode == ColorMode.SEGMENTATION and self.metadata.get("thing_colors"):
             colors = [
