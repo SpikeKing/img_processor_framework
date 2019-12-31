@@ -35,7 +35,8 @@ class VideoProcessor(object):
             "MODEL.WEIGHTS",
             "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl",
             "MODEL.DEVICE",
-            "cpu"]
+            # "cpu"]
+            "gpu"]
         cfg = setup_cfg(args)
         model = VisualizationDemo(cfg)
         return model, cfg
@@ -85,17 +86,17 @@ def img_processor_test():
     vp = VideoProcessor()
 
     # 处理视频
-    vid_path = os.path.join(DATA_DIR, 'videos', 'test.mp4')
-    out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.mp4')
-    vp.process_video(vid_path, out_vid_path)
+    # vid_path = os.path.join(DATA_DIR, 'videos', 'test.mp4')
+    # out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.mp4')
+    # vp.process_video(vid_path, out_vid_path)
 
     # 处理图像
-    # tmp_img = os.path.join(DATA_DIR, 'videos', 'test.jpg')
-    # out_img = os.path.join(DATA_DIR, 'videos', 'test.out.jpg')
-    # img_opencv = cv2.imread(tmp_img)
-    # img_rgb = vp.process_img(img_opencv)
-    # img_opencv = img_rgb[:, :, ::-1]
-    # cv2.imwrite(out_img, img_opencv)
+    tmp_img = os.path.join(DATA_DIR, 'videos', 'test.jpg')
+    out_img = os.path.join(DATA_DIR, 'videos', 'test.out.jpg')
+    img_opencv = cv2.imread(tmp_img)
+    img_rgb = vp.process_img(img_opencv)
+    img_opencv = img_rgb[:, :, ::-1]
+    cv2.imwrite(out_img, img_opencv)
 
 
 def main():
