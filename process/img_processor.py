@@ -6,9 +6,13 @@ Created by C. L. Wang on 2019/12/27
 """
 
 import os
-
+import sys
 import cv2
 import numpy as np
+
+p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if p not in sys.path:
+    sys.path.append(p)
 
 from demo_dir.demo import get_parser, setup_cfg
 from demo_dir.predictor import VisualizationDemo
