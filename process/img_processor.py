@@ -7,8 +7,8 @@ Created by C. L. Wang on 2019/12/27
 
 import os
 import sys
+
 import cv2
-import numpy as np
 
 p = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if p not in sys.path:
@@ -16,7 +16,6 @@ if p not in sys.path:
 
 from demo_dir.demo import get_parser, setup_cfg
 from demo_dir.predictor import VisualizationDemo
-from detectron2.data.detection_utils import read_image
 from root_dir import DATA_DIR, ROOT_DIR
 from utils.img_utils import init_vid
 
@@ -72,7 +71,7 @@ class VideoProcessor(object):
             if i == n_vid_frame:  # 特定帧数停止
                 break
 
-            print('[Info] frame processed: {} / {}'.format(i, n_vid_fps))
+            print('[Info] frame processed: {} / {}'.format(i, n_vid_frame))
 
             cap.set(cv2.CAP_PROP_POS_FRAMES, i)
             ret, frame = cap.read()
@@ -83,7 +82,6 @@ class VideoProcessor(object):
             vw.write(img_bgr)
 
         vw.release()
-
         print('[Info] 处理视频完成!')
 
 
@@ -91,17 +89,17 @@ def img_processor_test():
     vp = VideoProcessor()
 
     # 处理视频
-    # vid_path = os.path.join(DATA_DIR, 'videos', 'test.mp4')
-    # out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.mp4')
-    # vp.process_video(vid_path, out_vid_path)
+    vid_path = os.path.join(DATA_DIR, 'videos', 'test.mp4')
+    out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.mp4')
+    vp.process_video(vid_path, out_vid_path)
 
     # 处理图像
-    tmp_img = os.path.join(DATA_DIR, 'videos', 'test.jpg')
-    out_img = os.path.join(DATA_DIR, 'videos', 'test.out.jpg')
-    img_opencv = cv2.imread(tmp_img)
-    img_rgb = vp.process_img(img_opencv)
-    img_opencv = img_rgb[:, :, ::-1]
-    cv2.imwrite(out_img, img_opencv)
+    # tmp_img = os.path.join(DATA_DIR, 'videos', 'test.jpg')
+    # out_img = os.path.join(DATA_DIR, 'videos', 'test.out.jpg')
+    # img_opencv = cv2.imread(tmp_img)
+    # img_rgb = vp.process_img(img_opencv)
+    # img_opencv = img_rgb[:, :, ::-1]
+    # cv2.imwrite(out_img, img_opencv)
 
 
 def main():
