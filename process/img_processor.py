@@ -40,7 +40,8 @@ class VideoProcessor(object):
             "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl",
             "MODEL.DEVICE",
             # "cpu"]
-            "gpu"]
+            "cuda"]
+
         cfg = setup_cfg(args)
         model = VisualizationDemo(cfg)
         return model, cfg
