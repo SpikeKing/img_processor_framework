@@ -12,20 +12,23 @@ from detectron2.data.detection_utils import read_image
 from detectron2.utils.logger import setup_logger
 
 from predictor import VisualizationDemo
-
 # constants
+from root_dir import ROOT_DIR
+
 WINDOW_NAME = "COCO detections"
 
 
 def setup_cfg(args):
     # load config from file and command-line arguments
     cfg = get_cfg()
+
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
     # Set score_threshold for builtin models
     cfg.MODEL.RETINANET.SCORE_THRESH_TEST = args.confidence_threshold
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = args.confidence_threshold
     cfg.MODEL.PANOPTIC_FPN.COMBINE.INSTANCES_CONFIDENCE_THRESH = args.confidence_threshold
+
     cfg.freeze()
     return cfg
 
@@ -65,8 +68,21 @@ def get_parser():
 if __name__ == "__main__":
     mp.set_start_method("spawn", force=True)
     args = get_parser().parse_args()
-    logger = setup_logger()
+    logger = setup_logger("log")
     logger.info("Arguments: " + str(args))
+
+    args.config_file = os.path.join(ROOT_DIR, "configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
+    args.opts = [
+        "MODEL.WEIGHTS",
+        "detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl",
+        "MODEL.DEVICE",
+        "cpu"]
+
+    # detectron2://COCO-Detection/faster_rcnn_R_50_FPN_3x/137849458/model_final_280758.pkl
+    # args.config_file = os.path.join(ROOT_DIR, "configs/COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml")
+
+    args.input = [os.path.join(ROOT_DIR, "demo_dir/aoa.jpg")]
+    args.output = os.path.join(ROOT_DIR, "demo_dir/aoa.out.jpg")
 
     cfg = setup_cfg(args)
 

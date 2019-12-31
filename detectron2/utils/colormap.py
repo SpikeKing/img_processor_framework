@@ -124,6 +124,16 @@ def random_color(rgb=False, maximum=255):
     return ret
 
 
+def fixed_color(c_idx, rgb=False, maximum=255):
+    """
+    fixed_color
+    """
+    ret = _COLORS[c_idx] * maximum
+    if not rgb:
+        ret = ret[::-1]
+    return ret
+
+
 if __name__ == "__main__":
     import cv2
 
