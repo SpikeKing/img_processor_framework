@@ -10,7 +10,7 @@ import os
 import cv2
 import numpy as np
 
-from demo.demo import get_parser, setup_cfg
+from demo.model import get_parser, setup_cfg
 from demo.predictor import VisualizationDemo
 from detectron2.data.detection_utils import read_image
 from root_dir import DATA_DIR, ROOT_DIR
@@ -37,8 +37,8 @@ class VideoProcessor(object):
             "MODEL.DEVICE",
             "cpu"]
         cfg = setup_cfg(args)
-        demo = VisualizationDemo(cfg)
-        return demo, cfg
+        model = VisualizationDemo(cfg)
+        return model, cfg
 
     def process_img(self, img_opencv):
         """
