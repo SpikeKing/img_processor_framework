@@ -123,12 +123,12 @@ class VideoProcessor(object):
         # Step 5
         # Combine color image with edge mask & display picture
         # convert back to color, bit-AND with color image
-        img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2BGR)
-        img_cartoon = cv2.bitwise_and(img_color, img_edge)
+        img_edge = cv2.cvtColor(img_edge, cv2.COLOR_GRAY2BGR)  # 线条
+        # img_cartoon = cv2.bitwise_and(img_color, img_edge)   # 颜色
 
         # show_img_opencv(image_opencv)
         # show_img_opencv(img_cartoon)
-        return img_cartoon
+        return img_edge
 
     def process_img(self, img_opencv):
         """
