@@ -164,7 +164,7 @@ class _PanopticPrediction:
         if len(empty_ids) == 0:
             return np.zeros(self._seg.shape, dtype=np.uint8)
         assert (
-            len(empty_ids) == 1
+                len(empty_ids) == 1
         ), ">1 ids corresponds to no labels. This is currently not supported"
         return (self._seg != empty_ids[0]).numpy().astype(np.bool)
 
@@ -382,7 +382,7 @@ class Visualizer:
             masks = None
 
         # 过滤部分数据
-        boxes, scores, classes, labels, masks = self.filter_predictions(boxes, scores, classes, labels, masks)
+        # boxes, scores, classes, labels, masks = self.filter_predictions(boxes, scores, classes, labels, masks)
 
         if self._instance_mode == ColorMode.SEGMENTATION and self.metadata.get("thing_colors"):
             colors = [
@@ -446,7 +446,7 @@ class Visualizer:
         return self.output
 
     def draw_panoptic_seg_predictions(
-        self, panoptic_seg, segments_info, area_threshold=None, alpha=0.7
+            self, panoptic_seg, segments_info, area_threshold=None, alpha=0.7
     ):
         """
         Draw panoptic prediction results on an image.
@@ -547,14 +547,14 @@ class Visualizer:
         return self.output
 
     def overlay_instances(
-        self,
-        *,
-        boxes=None,
-        labels=None,
-        masks=None,
-        keypoints=None,
-        assigned_colors=None,
-        alpha=0.5
+            self,
+            *,
+            boxes=None,
+            labels=None,
+            masks=None,
+            keypoints=None,
+            assigned_colors=None,
+            alpha=0.5
     ):
         """
         Args:
@@ -603,9 +603,9 @@ class Visualizer:
         if labels is not None:
             assert len(labels) == num_instances
         if assigned_colors is None:
-            # assigned_colors = [random_color(rgb=True, maximum=1) for _ in range(num_instances)]
+            assigned_colors = [random_color(rgb=True, maximum=1) for _ in range(num_instances)]
             # 使用特定颜色绘制
-            assigned_colors = [fixed_color(1, rgb=True, maximum=1) for _ in range(num_instances)]
+            # assigned_colors = [fixed_color(1, rgb=True, maximum=1) for _ in range(num_instances)]
         if num_instances == 0:
             return self.output
         if boxes is not None and boxes.shape[1] == 5:
@@ -656,8 +656,8 @@ class Visualizer:
                 # for small objects, draw text at the side to avoid occlusion
                 instance_area = (y1 - y0) * (x1 - x0)
                 if (
-                    instance_area < _SMALL_OBJECT_AREA_THRESH * self.output.scale
-                    or y1 - y0 < 40 * self.output.scale
+                        instance_area < _SMALL_OBJECT_AREA_THRESH * self.output.scale
+                        or y1 - y0 < 40 * self.output.scale
                 ):
                     if y1 >= self.output.height - 5:
                         text_pos = (x1, y0)
@@ -667,9 +667,9 @@ class Visualizer:
                 height_ratio = (y1 - y0) / np.sqrt(self.output.height * self.output.width)
                 lighter_color = self._change_color_brightness(color, brightness_factor=0.7)
                 font_size = (
-                    np.clip((height_ratio - 0.02) / 0.08 + 1, 1.2, 2)
-                    * 0.5
-                    * self._default_font_size
+                        np.clip((height_ratio - 0.02) / 0.08 + 1, 1.2, 2)
+                        * 0.5
+                        * self._default_font_size
                 )
                 self.draw_text(
                     labels[i],
@@ -788,14 +788,14 @@ class Visualizer:
     """
 
     def draw_text(
-        self,
-        text,
-        position,
-        *,
-        font_size=None,
-        color="g",
-        horizontal_alignment="center",
-        rotation=0
+            self,
+            text,
+            position,
+            *,
+            font_size=None,
+            color="g",
+            horizontal_alignment="center",
+            rotation=0
     ):
         """
         Args:
@@ -869,7 +869,7 @@ class Visualizer:
         return self.output
 
     def draw_rotated_box_with_label(
-        self, rotated_box, alpha=0.5, edge_color="g", line_style="-", label=None
+            self, rotated_box, alpha=0.5, edge_color="g", line_style="-", label=None
     ):
         """
         Args:
@@ -915,7 +915,7 @@ class Visualizer:
             height_ratio = h / np.sqrt(self.output.height * self.output.width)
             label_color = self._change_color_brightness(edge_color, brightness_factor=0.7)
             font_size = (
-                np.clip((height_ratio - 0.02) / 0.08 + 1, 1.2, 2) * 0.5 * self._default_font_size
+                    np.clip((height_ratio - 0.02) / 0.08 + 1, 1.2, 2) * 0.5 * self._default_font_size
             )
             self.draw_text(label, text_pos, color=label_color, font_size=font_size, rotation=angle)
 
@@ -971,7 +971,7 @@ class Visualizer:
         return self.output
 
     def draw_binary_mask(
-        self, binary_mask, color=None, *, edge_color=None, text=None, alpha=0.5, area_threshold=4096
+            self, binary_mask, color=None, *, edge_color=None, text=None, alpha=0.5, area_threshold=4096
     ):
         """
         Args:

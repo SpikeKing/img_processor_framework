@@ -18,6 +18,7 @@ from demo_dir.demo import get_parser, setup_cfg
 from demo_dir.predictor import VisualizationDemo
 from root_dir import DATA_DIR, ROOT_DIR
 from utils.img_utils import init_vid
+from utils.project_utils import get_current_time_str
 
 
 class VideoProcessor(object):
@@ -91,7 +92,7 @@ def img_processor_test():
 
     # 处理视频
     vid_path = os.path.join(DATA_DIR, 'videos', 'test.mp4')
-    out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.mp4')
+    out_vid_path = os.path.join(DATA_DIR, 'videos', 'test.out.{}.mp4'.format(get_current_time_str()))
     vp.process_video(vid_path, out_vid_path)
 
     # 处理图像
